@@ -7,14 +7,11 @@ import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ProductTermsTest {
+class CommonTermsTest {
 
     private Underlying underlying;
     private Money notional;
     private Money initialPrice;
-    private Percentage capital;
-    private Percentage coupon;
-    private Percentage autocall;
     private LocalDate issueDate;
     private LocalDate maturityDate;
 
@@ -23,9 +20,6 @@ class ProductTermsTest {
         underlying   = new Underlying("AAPL", Currency.USD);
         notional     = Money.of("1000000", Currency.USD);
         initialPrice = Money.of("200", Currency.USD);
-        capital      = Percentage.ofPercent("60");
-        coupon       = Percentage.ofPercent("70");
-        autocall     = Percentage.ofPercent("100");
         issueDate    = LocalDate.of(2026, 10, 2);
         maturityDate = issueDate.plusYears(3);
     }
@@ -43,20 +37,6 @@ class ProductTermsTest {
     }
 
     @Test
-    void capitalBarrierAboveCouponBarrierThrows() {
-        capital = Percentage.ofPercent("75");
-        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, this::terms);
-        assertTrue(ex.getMessage().contains("capital barrier"));
-    }
-
-    @Test
-    void couponBarrierAboveAutocallTriggerThrows() {
-        coupon = Percentage.ofPercent("120");
-        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, this::terms);
-        assertTrue(ex.getMessage().contains("coupon barrier"));
-    }
-
-    @Test
     void zeroNotionalThrows() {
         notional = Money.of("0", Currency.USD);
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, this::terms);
@@ -70,9 +50,8 @@ class ProductTermsTest {
         assertTrue(ex.getMessage().contains("initial price"));
     }
 
-    private ProductTerms terms() {
-        return new ProductTerms("AC-001", underlying, notional, initialPrice,
-                Percentage.ofPercent("8"), coupon, autocall, capital,
-                issueDate, maturityDate, ObservationFrequency.QUARTERLY);
+    private CommonTerms terms() {
+        return new CommonTerms("AC-001", underlying, notional, initialPrice,
+                Percentage.ofPercent("8"), issueDate, maturityDate, ObservationFrequency.QUARTERLY);
     }
 }
