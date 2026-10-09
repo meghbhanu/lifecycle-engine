@@ -69,18 +69,19 @@ public final class PayoffCalculator {
         CommonTerms terms = autocallable.terms();
         BigDecimal performance = performance(observation.price().amount(),
                 terms.initialPrice().amount());
-        Money coupon = performance.compareTo(autocallable.couponBarrier().fraction()) >= 0 ?
-            periodCoupon(terms) : Money.of("0", terms.notional().currency());
+        Money coupon = periodCoupon(terms);
+        boolean couponEarned = performance.compareTo(autocallable.couponBarrier().fraction()) >= 0;
 
         if (observation.finalObservation()) {
+            Money finalCoupon = couponEarned ? coupon : Money.of("0", terms.notional().currency());
             Money redemption = maturityRedemption(terms.notional(), performance,
                     autocallable.capitalBarrier().fraction());
-            return new Redeemed(coupon, redemption, RedemptionReason.MATURITY);
+            return new Redeemed(finalCoupon, redemption, RedemptionReason.MATURITY);
         }
         if (performance.compareTo(autocallable.autocallTrigger().fraction()) >= 0) {
             return new Redeemed(coupon, terms.notional(), RedemptionReason.AUTOCALL);
         }
-        return new Continues(coupon);
+        return couponEarned ? new Continues(coupon) : new Missed(coupon);
     }
 
     private ObservationOutcome evaluateBrc(BarrierReverseConvertible brc, Observation observation) {

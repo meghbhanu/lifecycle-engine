@@ -46,6 +46,6 @@ class AutocallableTest {
     }
 
     private Autocallable autocallable() {
-        return new Autocallable(TestTerms.common("AC-001"), coupon, autocall, capital);
+        return new Autocallable(TestTerms.common("AC-001"), coupon, autocall, capital, false);
     }
 }

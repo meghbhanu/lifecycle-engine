@@ -14,7 +14,7 @@ class ProductDescriptionsTest {
         Percentage coupon       = Percentage.ofPercent("70");
         Percentage autocall     = Percentage.ofPercent("100");
         Autocallable autocallable = new Autocallable(TestTerms.common("AC-001"),
-                coupon, autocall, capital);
+                coupon, autocall, capital, false);
 
         String description = "Autocallable AC-001: autocall at 100%, coupon barrier 70%, capital barrier 60%";
 

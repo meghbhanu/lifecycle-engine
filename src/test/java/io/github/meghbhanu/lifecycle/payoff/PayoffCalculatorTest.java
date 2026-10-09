@@ -38,7 +38,8 @@ public class PayoffCalculatorTest {
                 TestTerms.common("AC-001"),
                 Percentage.ofPercent("70"),
                 Percentage.ofPercent("100"),
-                Percentage.ofPercent("60"));
+                Percentage.ofPercent("60"),
+                false);
 
         @Test
         void priceAboveTriggerAutocallsWithCoupon() {
@@ -59,9 +60,15 @@ public class PayoffCalculatorTest {
         }
 
         @Test
-        void priceBelowCouponBarrierPaysNothingAndContinues() {
-            assertEquals(new Continues(NO_COUPON),
+        void priceBelowCouponBarrierMissesCoupon() {
+            assertEquals(new Missed(COUPON),
                     calculator.evaluate(autocallable, observation("130", false)));
+        }
+
+        @Test
+        void finalAboveCouponBarrierPaysCouponAndFullNotional() {
+            assertEquals(new Redeemed(COUPON, NOTIONAL, RedemptionReason.MATURITY),
+                    calculator.evaluate(autocallable, observation("160", true)));   // 80%
         }
 
         @Test

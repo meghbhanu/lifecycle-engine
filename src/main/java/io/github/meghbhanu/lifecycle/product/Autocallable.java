@@ -6,7 +6,8 @@ import io.github.meghbhanu.lifecycle.domain.Percentage;
 import java.util.Objects;
 
 public record Autocallable(CommonTerms terms, Percentage couponBarrier,
-                           Percentage autocallTrigger, Percentage capitalBarrier) implements Product {
+                           Percentage autocallTrigger, Percentage capitalBarrier,
+                           boolean memoryCoupon) implements Product {
     public Autocallable {
         Objects.requireNonNull(terms, "terms");
         Objects.requireNonNull(couponBarrier, "couponBarrier");
