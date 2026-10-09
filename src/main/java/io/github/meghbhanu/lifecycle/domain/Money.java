@@ -12,6 +12,10 @@ public record Money(BigDecimal amount, Currency currency) {
         amount = amount.setScale(currency.decimalPlaces(), RoundingMode.HALF_EVEN);
     }
 
+    public static Money of(BigDecimal amount, Currency currency) {
+        return new Money(amount, currency);
+    }
+
     public static Money of(String amount, Currency currency) {
         return new Money(new BigDecimal(amount), currency);
     }
