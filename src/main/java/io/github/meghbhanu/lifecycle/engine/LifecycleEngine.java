@@ -4,6 +4,7 @@ import io.github.meghbhanu.lifecycle.domain.CommonTerms;
 import io.github.meghbhanu.lifecycle.domain.Currency;
 import io.github.meghbhanu.lifecycle.domain.Money;
 import io.github.meghbhanu.lifecycle.marketdata.PriceHistory;
+import io.github.meghbhanu.lifecycle.marketdata.PriceSource;
 import io.github.meghbhanu.lifecycle.payoff.*;
 import io.github.meghbhanu.lifecycle.product.Autocallable;
 import io.github.meghbhanu.lifecycle.product.Product;
@@ -25,7 +26,7 @@ public final class LifecycleEngine {
     }
 
     public List<LifecycleEvent> run(
-            Product product, List<ScheduledDate> schedule, PriceHistory prices) {
+            Product product, List<ScheduledDate> schedule, PriceSource prices) {
         Objects.requireNonNull(product, "product");
         Objects.requireNonNull(schedule, "schedule");
         Objects.requireNonNull(prices, "prices");

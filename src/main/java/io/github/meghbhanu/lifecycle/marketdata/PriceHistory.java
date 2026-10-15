@@ -5,7 +5,7 @@ import io.github.meghbhanu.lifecycle.domain.Money;
 import java.time.LocalDate;
 import java.util.*;
 
-public final class PriceHistory {
+public final class PriceHistory implements PriceSource {
     private final NavigableMap<LocalDate, Money> prices;
 
     public PriceHistory(Map<LocalDate, Money> prices) {
