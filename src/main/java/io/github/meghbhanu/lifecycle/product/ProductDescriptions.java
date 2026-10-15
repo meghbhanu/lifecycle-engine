@@ -6,7 +6,7 @@ public final class ProductDescriptions {
 
     public static String describe(Product product) {
         return switch (product) {
-            case Autocallable(var terms, var coupon, var autocall, var capital) ->
+            case Autocallable(var terms, var coupon, var autocall, var capital, var memory) ->
                     "Autocallable %s: autocall at %s, coupon barrier %s, capital barrier %s"
                             .formatted(terms.productId(), autocall, coupon, capital);
             case BarrierReverseConvertible(var terms, var capital) ->

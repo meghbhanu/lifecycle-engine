@@ -103,7 +103,22 @@ public class LifecycleEngineTest {
                 new Autocalled(ID, Q2, NOTIONAL)), events);
     }
 
+    @Test
+    void withoutMemoryMissedCouponsAreLost() {
+        List<LifecycleEvent> events = engine.run(
+                autocallable(NO_MEMORY),
+                schedule(Q1, Q2, Q3, Q4, Q5, Q6),
+                prices(Map.of(Q1, "180", Q2, "130", Q3, "125",
+                        Q4, "160", Q5, "205")));
 
+        assertEquals(List.of(
+                new CouponPaid(ID, Q1, COUPON),
+                new CouponMissed(ID, Q2, COUPON),
+                new CouponMissed(ID, Q3, COUPON),
+                new CouponPaid(ID, Q4, COUPON),
+                new CouponPaid(ID, Q5, COUPON),
+                new Autocalled(ID, Q5, NOTIONAL)), events);
+    }
 
     private Autocallable autocallable(boolean memory) {
         return new Autocallable(TestTerms.common(ID), COUPON_BARRIER, AUTOCALL_TRIGGER, CAPITAL_BARRIER, memory);
@@ -124,6 +139,4 @@ public class LifecycleEngineTest {
         }
         return new PriceHistory(money);
     }
-
-
 }
